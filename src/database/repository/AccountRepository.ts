@@ -9,7 +9,8 @@ export default class AccountRepository extends Repository<Account> {
   }
 
   createAndSave(email: string, password: string, flat: Flat): void {
-    this.save({ email, password, flat });
+    const account = this.create({ email, password, flat });
+    this.save(account);
   }
 
   updateById(id: number, email: string, flat: Flat): void {
@@ -20,7 +21,7 @@ export default class AccountRepository extends Repository<Account> {
     this.delete({ id });
   }
 
-  login(email: string, password: string): Promise<Account | undefined> {
-    return this.findOne({ select: ["id", "email", "flat"], relations: ["flat"], where: { email, password } });
+  findByEmail(email: string): Promise<Account | undefined> {
+    return this.findOne({ select: ["id", "email", "password", "flat"], relations: ["flat"], where: { email } });
   }
 }
