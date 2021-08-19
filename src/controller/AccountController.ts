@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import { getCustomRepository } from "typeorm";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
-import Account from "../database/entity/Account";
 import AccountRepository from "../database/repository/AccountRepository";
 
 class FlatController {
@@ -77,12 +78,23 @@ class FlatController {
 
     try {
       const { email, password } = req.body;
-      const account = await accountRepository.login(email, password);
+      const account = await accountRepository.findByEmail(email);
 
-      if (account) {
-        return res.status(200).send(account);
-      } else {
+      if (!account) {
         return res.sendStatus(403);
+      }
+      const isValidPassword = await bcrypt.compare(password, account.password);
+
+      if (!isValidPassword) {
+        return res.sendStatus(403);
+      } else {
+        const token = jwt.sign({ id: account.id }, 'secret', { expiresIn: '1d' });
+
+        return res.status(200).send({ 
+          id: account.id,
+          email: account.email,
+          token
+         });
       }
     } catch (error) {
       return res.status(500).send(error);
