@@ -4,10 +4,13 @@ import {
   Column,
   ManyToOne,
   BeforeInsert,
-  BeforeUpdate
+  BeforeUpdate,
+  OneToMany
 } from "typeorm";
-import Flat from "./Flat";
 import bcrypt from "bcryptjs";
+
+import Flat from "./Flat";
+import User from "./User";
 @Entity()
 export default class Account {
   @PrimaryGeneratedColumn("increment")
@@ -29,6 +32,10 @@ export default class Account {
 
   @ManyToOne(() => Flat, (flat) => flat.id)
   flat!: Flat;
+
+  @OneToMany(() => User, (user) => user.account)
+  users!: User[]
+
 
   @BeforeInsert()
   @BeforeUpdate()
