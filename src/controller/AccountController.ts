@@ -22,6 +22,24 @@ class FlatController {
     }
   }
 
+  async findUsersAccount(req: Request, res: Response): Promise<Response> {
+    const accountRepository = getCustomRepository(AccountRepository);
+
+    try {
+      const { id } = req.body;
+
+      const accounts = await accountRepository.findUsersAccount(id);
+
+      if (accounts) {
+        return res.status(200).send(accounts);
+      } else {
+        return res.sendStatus(204);
+      }
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  }
+
   async create(req: Request, res: Response): Promise<Response> {
     const accountRepository = getCustomRepository(AccountRepository);
 
@@ -88,13 +106,15 @@ class FlatController {
       if (!isValidPassword) {
         return res.sendStatus(403);
       } else {
-        const token = jwt.sign({ id: account.id }, 'secret', { expiresIn: '1d' });
+        const token = jwt.sign({ id: account.id }, "secret", {
+          expiresIn: "1d",
+        });
 
-        return res.status(200).send({ 
+        return res.status(200).send({
           id: account.id,
           email: account.email,
-          token
-         });
+          token,
+        });
       }
     } catch (error) {
       return res.status(500).send(error);

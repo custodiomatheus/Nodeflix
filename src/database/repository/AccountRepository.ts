@@ -1,11 +1,21 @@
 import { EntityRepository, Repository } from "typeorm";
 import Account from "../entity/Account";
 import Flat from "../entity/Flat";
-
 @EntityRepository(Account)
 export default class AccountRepository extends Repository<Account> {
   findAll(): Promise<Account[]> {
-    return this.find({ select: ["id", "email", "flat"], relations: ["flat"] });
+    return this.find({
+      select: ["id", "email", "flat", "users"],
+      relations: ["flat", "users"],
+    });
+  }
+
+  findUsersAccount(id: number): Promise<Account | undefined> {
+    return this.findOne({
+      select: ["id", "email", "flat", "users"],
+      relations: ["flat", "users"],
+      where: { id },
+    });
   }
 
   createAndSave(email: string, password: string, flat: Flat): void {
@@ -22,6 +32,10 @@ export default class AccountRepository extends Repository<Account> {
   }
 
   findByEmail(email: string): Promise<Account | undefined> {
-    return this.findOne({ select: ["id", "email", "password", "flat"], relations: ["flat"], where: { email } });
+    return this.findOne({
+      select: ["id", "email", "password", "flat"],
+      relations: ["flat"],
+      where: { email },
+    });
   }
 }
