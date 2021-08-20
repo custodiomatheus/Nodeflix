@@ -35,6 +35,7 @@ class App {
   private routes(): void {
     this.express.use("/flat", require("./router/flat.routes"));
     this.express.use("/account", require("./router/account.routes"));
+    this.express.use("/user", require("./router/user.routes"));
   }
 }
 
