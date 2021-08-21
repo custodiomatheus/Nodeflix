@@ -5,8 +5,8 @@ import authMiddleware from "../middlewares/authMiddleware";
 const routes = Router();
 
 routes.get(`/`, authMiddleware, AccountController.findAll);
-routes.get(`/users`, authMiddleware, AccountController.findUsersAccount);
-routes.post(`/`, authMiddleware, AccountController.create);
+routes.get(`/users/:id`, authMiddleware, AccountController.findUsersAccount);
+routes.post(`/`, AccountController.create);
 routes.put(`/`, authMiddleware, AccountController.update);
 routes.delete(`/`, authMiddleware, AccountController.delete);
 routes.post(`/login`, AccountController.login);
