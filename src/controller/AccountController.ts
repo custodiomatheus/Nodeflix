@@ -26,9 +26,9 @@ class FlatController {
     const accountRepository = getCustomRepository(AccountRepository);
 
     try {
-      const { id } = req.body;
+      const { id } = req.params;
 
-      const accounts = await accountRepository.findUsersAccount(id);
+      const accounts = await accountRepository.findUsersAccount(parseInt(id));
 
       if (accounts) {
         return res.status(200).send(accounts);
