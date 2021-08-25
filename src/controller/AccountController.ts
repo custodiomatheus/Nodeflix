@@ -106,7 +106,8 @@ class FlatController {
       if (!isValidPassword) {
         return res.sendStatus(403);
       } else {
-        const token = jwt.sign({ id: account.id }, "secret", {
+        // TODO -> .ENV
+        const token = jwt.sign({ id: account.id }, "", {
           expiresIn: "1d",
         });
 

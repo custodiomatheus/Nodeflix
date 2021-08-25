@@ -20,12 +20,12 @@ class App {
 
   private async database(): Promise<void> {
     await createConnection({
-      type: "mysql",
-      host: "localhost",
-      port: 3306,
-      username: "root",
-      password: "#Gf123456",
-      database: "vuetflix",
+      type: "",
+      host: "",
+      port: "",
+      username: "",
+      password: "",
+      database: "",
       entities: [__dirname + "/database/entity/*.ts"],
     })
       .then(() => console.log("Database connected succesfully"))
