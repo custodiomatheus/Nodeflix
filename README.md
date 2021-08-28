@@ -29,6 +29,7 @@ npm start
 http://localhost:3000
 
 ## Technologies
+* nodejs
 * bcryptjs
 * cors
 * express
