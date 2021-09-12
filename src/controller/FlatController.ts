@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { getCustomRepository } from "typeorm";
 
-import Flat from "../database/entity/Flat";
 import FlatRepository from "../database/repository/FlatRepository";
 
 class FlatController {
@@ -21,7 +20,7 @@ class FlatController {
     }
   }
 
-  // TODO -> criar exceptions para os unique
+  // TODO -> CRIAR EXCEPTIONS
   async create(req: Request, res: Response): Promise<Response> {
     const flatRepository = getCustomRepository(FlatRepository);
 
