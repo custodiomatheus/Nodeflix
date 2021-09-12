@@ -1,7 +1,9 @@
 import express from "express";
 import cors from "cors";
-import "reflect-metadata";
 import { createConnection } from "typeorm";
+
+import dotenv from "dotenv";
+dotenv.config({ path: `.env.development.local` });
 
 class App {
   public express: express.Application;
@@ -20,12 +22,12 @@ class App {
 
   private async database(): Promise<void> {
     await createConnection({
-      type: "",
-      host: "",
-      port: "",
-      username: "",
-      password: "",
-      database: "",
+      type: "mysql",
+      host: process.env.DB_HOST,
+      port: parseInt(process.env.DB_PORT || ""),
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
       entities: [__dirname + "/database/entity/*.ts"],
     })
       .then(() => console.log("Database connected succesfully"))
@@ -36,6 +38,7 @@ class App {
     this.express.use("/flat", require("./router/flat.routes"));
     this.express.use("/account", require("./router/account.routes"));
     this.express.use("/user", require("./router/user.routes"));
+    this.express.use("/users-shows", require("./router/usersShows.routes"));
   }
 }
 
