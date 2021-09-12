@@ -1,5 +1,12 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  OneToMany,
+} from "typeorm";
 import Account from "./Account";
+import UsersShows from "./UsersShows";
 
 @Entity()
 export default class User {
@@ -14,4 +21,7 @@ export default class User {
 
   @ManyToOne(() => Account, (account) => account.id)
   account!: Account;
+
+  @OneToMany(() => UsersShows, (userShow) => userShow.user)
+  userShow!: UsersShows[];
 }
