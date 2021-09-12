@@ -5,7 +5,7 @@ import {
   ManyToOne,
   BeforeInsert,
   BeforeUpdate,
-  OneToMany
+  OneToMany,
 } from "typeorm";
 import bcrypt from "bcryptjs";
 
@@ -34,12 +34,11 @@ export default class Account {
   flat!: Flat;
 
   @OneToMany(() => User, (user) => user.account)
-  users!: User[]
-
+  users!: User[];
 
   @BeforeInsert()
   @BeforeUpdate()
   hashPassword() {
-    this.password = bcrypt.hashSync(this.password);
+    this.password = bcrypt.hashSync(this.password, process.env.HASH_AMOUNT);
   }
 }
