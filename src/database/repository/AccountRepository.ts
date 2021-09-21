@@ -24,9 +24,8 @@ export default class AccountRepository extends Repository<Account> {
     });
   }
 
-  async findAndUpdate(id: number, email: string, password: string) {
+  async findAndUpdate(id: number, email: string, password: string): Promise<void> {
     const user = this.create({ email, password });
-
     this.update(id, user);
   }
 }

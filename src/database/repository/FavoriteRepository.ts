@@ -3,7 +3,7 @@ import Favorite from "../entity/Favorite";
 
 @EntityRepository(Favorite)
 export class FavoriteRepository extends Repository<Favorite> {
-  findAll() {
+  findAll(): Promise<Favorite[]> {
     return getRepository(Favorite)
       .createQueryBuilder("favorite")
       .leftJoinAndSelect("favorite.user", "user")
@@ -11,7 +11,7 @@ export class FavoriteRepository extends Repository<Favorite> {
       .getMany();
   }
 
-  findUserFavorites(id: number) {
+  findUserFavorites(id: number): Promise<Favorite[]> {
     return getRepository(Favorite)
       .createQueryBuilder("favorite")
       .leftJoinAndSelect("favorite.user", "user")
@@ -19,7 +19,7 @@ export class FavoriteRepository extends Repository<Favorite> {
       .getMany();
   }
 
-  findByUserAndShow(userId: number, showId: number) {
+  findByUserAndShow(userId: number, showId: number): Promise<Favorite | undefined> {
     return getRepository(Favorite)
       .createQueryBuilder("favorite")
       .leftJoinAndSelect("favorite.user", "user")

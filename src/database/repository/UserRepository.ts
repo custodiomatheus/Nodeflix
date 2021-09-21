@@ -9,11 +9,11 @@ export class UserRepository extends Repository<User> {
     this.save(user);
   }
 
-  updateNickname(id: number, nickname: string) {
+  updateNickname(id: number, nickname: string): void {
     this.save({ id, nickname });
   }
 
-  findUserFavorites(id: number) {
+  findUserFavorites(id: number): Promise<User | undefined> {
     return getRepository(User)
             .createQueryBuilder("user")
             .innerJoinAndSelect("user.favorites", "favorite")

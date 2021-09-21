@@ -3,7 +3,7 @@ import { getCustomRepository } from "typeorm";
 import { FavoriteRepository } from "../database/repository/FavoriteRepository";
 
 class FavoriteController {
-  async findAll(req: Request, res: Response) {
+  async findAll(req: Request, res: Response): Promise<Response> {
     const favoriteRepository = getCustomRepository(FavoriteRepository);
 
     try {
@@ -21,27 +21,7 @@ class FavoriteController {
     }
   }
 
-  async findUserFavorite(req: Request, res: Response) {
-    // const usersShowsRepository = getCustomRepository(UsersShowsRepository);
-
-    // try {
-    //   const { id } = req.params;
-    //   const usersShows = await usersShowsRepository.findUserFavorites(
-    //     parseInt(id)
-    //   );
-
-    //   if (usersShows) {
-    //     return res.status(200).send(usersShows);
-    //   } else {
-    //     return res.sendStatus(204);
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    //   return res.status(500).send(error);
-    // }
-  }
-
-  async create(req: Request, res: Response) {
+  async create(req: Request, res: Response): Promise<Response> {
     const favoriteRepository = getCustomRepository(FavoriteRepository);
 
     try {
@@ -55,7 +35,7 @@ class FavoriteController {
     }
   }
 
-  async remove(req: Request, res: Response) {
+  async remove(req: Request, res: Response): Promise<Response> {
     const favoriteRepository = getCustomRepository(FavoriteRepository);
 
     try {
