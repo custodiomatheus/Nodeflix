@@ -6,7 +6,7 @@ import {
   OneToMany,
 } from "typeorm";
 import Account from "./Account";
-import UsersShows from "./UsersShows";
+import Favorite from "./Favorite";
 
 @Entity()
 export default class User {
@@ -22,6 +22,6 @@ export default class User {
   @ManyToOne(() => Account, (account) => account.id)
   account!: Account;
 
-  @OneToMany(() => UsersShows, (userShow) => userShow.user)
-  userShow!: UsersShows[];
+  @OneToMany(() => Favorite, (favorite) => favorite.user)
+  favorites!: Favorite[];
 }

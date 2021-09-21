@@ -6,7 +6,7 @@ export default class Flat {
   id!: number;
 
   @Column("varchar", {
-    length: 45,
+    length: 7,
     nullable: false,
     unique: true,
   })

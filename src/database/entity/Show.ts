@@ -1,18 +1,16 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import UsersShows from "./UsersShows";
+import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from "typeorm";
+import Favorite from "./Favorite";
 
 @Entity({ name: "shows" })
 export default class Show {
-  @PrimaryGeneratedColumn("increment")
+  @PrimaryGeneratedColumn()
   id!: number;
 
   @Column("varchar", {
-    nullable: false
+    nullable: false,
   })
-  type!: string
+  type!: string;
 
-  @OneToMany(() => UsersShows, (userShow) => userShow.show, {
-    cascade: true,
-  })
-  userShow!: UsersShows[];
+  @OneToMany(() => Favorite, (favorite) => favorite.user)
+  favorites!: Favorite[];
 }

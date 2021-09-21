@@ -24,7 +24,7 @@ export default class Account {
   email!: string;
 
   @Column("varchar", {
-    length: 45,
+    length: 100,
     nullable: false,
     unique: true,
   })
@@ -39,6 +39,6 @@ export default class Account {
   @BeforeInsert()
   @BeforeUpdate()
   hashPassword() {
-    this.password = bcrypt.hashSync(this.password, process.env.HASH_AMOUNT);
+    this.password = bcrypt.hashSync(this.password, 8);
   }
 }
