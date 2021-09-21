@@ -4,8 +4,8 @@ import authMiddleware from "../middlewares/authMiddleware";
 
 const routes = Router();
 
-routes.get(`/`, authMiddleware, UserController.findByAccount);
 routes.post(`/`, authMiddleware, UserController.create);
 routes.patch(`/`, authMiddleware, UserController.updateNickname);
+routes.get(`/favorites/:id`, authMiddleware, UserController.findUsersFavorites);
 
 module.exports = routes;
