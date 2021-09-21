@@ -35,10 +35,10 @@ class App {
   }
 
   private routes(): void {
-    this.express.use("/flat", require("./router/flat.routes"));
-    this.express.use("/account", require("./router/account.routes"));
-    this.express.use("/user", require("./router/user.routes"));
-    this.express.use("/users-shows", require("./router/usersShows.routes"));
+    this.express.use("/flats", require("./router/flat.routes"));
+    this.express.use("/accounts", require("./router/account.routes"));
+    this.express.use("/users", require("./router/user.routes"));
+    this.express.use("/favorites", require("./router/favorites.routes"));
   }
 }
 
