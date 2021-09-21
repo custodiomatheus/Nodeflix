@@ -1,4 +1,4 @@
-import { EntityRepository, Repository } from "typeorm";
+import { EntityRepository, getRepository, Repository } from "typeorm";
 import User from "../entity/User";
 import Account from "../entity/Account";
 
@@ -9,14 +9,16 @@ export class UserRepository extends Repository<User> {
     this.save(user);
   }
 
-  findByAccount(account: Account): Promise<User[]> {
-    return this.find({
-      where: { account: account },
-      relations: ["account"],
-    });
-  }
-
   updateNickname(id: number, nickname: string) {
     this.save({ id, nickname });
+  }
+
+  findUserFavorites(id: number) {
+    return getRepository(User)
+            .createQueryBuilder("user")
+            .innerJoinAndSelect("user.favorites", "favorite")
+            .innerJoinAndSelect("favorite.show", "show")
+            .where(`user.id = ${id}`)
+            .getOne();
   }
 }

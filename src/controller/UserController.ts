@@ -4,23 +4,6 @@ import { getCustomRepository } from "typeorm";
 import { UserRepository } from "../database/repository/UserRepository";
 
 class UserController {
-  async findByAccount(req: Request, res: Response): Promise<Response> {
-    const userRepository = getCustomRepository(UserRepository);
-
-    try {
-      const { account } = req.body;
-      const users = await userRepository.findByAccount(account);
-
-      if (users.length) {
-        return res.status(200).send(users);
-      } else {
-        return res.sendStatus(204);
-      }
-    } catch (error) {
-      return res.status(500).send(error);
-    }
-  }
-
   async create(req: Request, res: Response): Promise<Response> {
     const userRepository = getCustomRepository(UserRepository);
 
@@ -46,7 +29,25 @@ class UserController {
         userRepository.updateNickname(id, nickname);
         return res.sendStatus(200);
       } else {
-        return res.status(409).send({ message: "User do not exists" });
+        return res.status(409).send({ message: `The user with id ${id} do not exists` });
+      }
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  }
+
+  async findUsersFavorites(req: Request, res: Response): Promise<Response> {
+    const userRepository = getCustomRepository(UserRepository);
+
+    try {
+      const { id } = req.params;
+
+      const users = await userRepository.findUserFavorites(parseInt(id));
+
+      if (users) {
+        return res.status(200).send(users);
+      } else {
+        return res.sendStatus(204);
       }
     } catch (error) {
       return res.status(500).send(error);

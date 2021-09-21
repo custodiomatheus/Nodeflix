@@ -3,13 +3,6 @@ import Account from "../entity/Account";
 import Flat from "../entity/Flat";
 @EntityRepository(Account)
 export default class AccountRepository extends Repository<Account> {
-  findAll(): Promise<Account[]> {
-    return this.find({
-      select: ["id", "email", "flat", "users"],
-      relations: ["flat", "users"],
-    });
-  }
-
   findUsersAccount(id: number): Promise<Account | undefined> {
     return this.findOne({
       select: ["id", "email", "flat", "users"],
@@ -23,19 +16,17 @@ export default class AccountRepository extends Repository<Account> {
     this.save(account);
   }
 
-  updateById(id: number, email: string, flat: Flat): void {
-    this.save({ id, email, flat });
-  }
-
-  deleteById(id: number): void {
-    this.delete({ id });
-  }
-
   findByEmail(email: string): Promise<Account | undefined> {
     return this.findOne({
       select: ["id", "email", "password", "flat"],
       relations: ["flat"],
       where: { email },
     });
+  }
+
+  async findAndUpdate(id: number, email: string, password: string) {
+    const user = this.create({ email, password });
+
+    this.update(id, user);
   }
 }
