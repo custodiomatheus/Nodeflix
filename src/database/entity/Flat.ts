@@ -19,4 +19,10 @@ export default class Flat {
     unique: true,
   })
   price!: number;
+
+  @Column("int", {
+    nullable: false,
+    unique: true,
+  })
+  amountScreen!: number;
 }
