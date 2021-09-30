@@ -13,7 +13,7 @@ class FlatController {
       if (flats.length) {
         return res.status(200).send(flats);
       } else {
-        return res.sendStatus(204);
+        return res.status(204).send({ message: "None Flat found" });
       }
     } catch (error) {
       return res.status(500).send(error);

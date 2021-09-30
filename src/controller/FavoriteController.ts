@@ -9,7 +9,7 @@ class FavoriteController {
     try {
       const favorite = await favoriteRepository.findAll();
 
-      if (favorite) {
+      if (favorite.length) {
         return res.status(200).send(favorite);
       } else {
         return res.sendStatus(204);
@@ -26,7 +26,22 @@ class FavoriteController {
 
     try {
       const { user, show } = req.body;
-      await favoriteRepository.save({user, show});
+
+      if (!user || !show) {
+        const message = (type: string, value: any) => {
+          return { message: `The value ${value} is invalid to ${type}` };
+        };
+
+        if (!user) {
+          return res.status(409).send(message("user", user));
+        }
+
+        if (!show) {
+          return res.status(409).send(message("show", show));
+        }
+      }
+
+      await favoriteRepository.save({ user, show });
       return res.sendStatus(200);
     } catch (error) {
       console.log(error);
@@ -40,12 +55,22 @@ class FavoriteController {
 
     try {
       const { user, show } = req.body;
-      
-      if(!user || !show) {
-        return res.status(409).send({ message: `Missing user or show to remove favorite` });
+
+      if (!user || !show) {
+        const message = (type: string, value: any) => {
+          return { message: `The value ${value} is invalid to ${type}` };
+        };
+
+        if (!user) {
+          return res.status(409).send(message("user", user));
+        }
+
+        if (!show) {
+          return res.status(409).send(message("show", show));
+        }
       }
 
-      await favoriteRepository.remove({user, show});
+      await favoriteRepository.remove({ user, show });
       return res.sendStatus(200);
     } catch (error) {
       console.log(error);

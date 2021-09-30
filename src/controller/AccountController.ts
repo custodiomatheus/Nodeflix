@@ -12,9 +12,13 @@ class FlatController {
     try {
       const { id } = req.params;
 
+      if (!id) {
+        return res.status(409).send({ message: `The value ${id} is invalid` });
+      }
+
       const accounts = await accountRepository.findUsersAccount(parseInt(id));
 
-      if (accounts) {
+      if (accounts?.users.length) {
         return res.status(200).send(accounts);
       } else {
         return res.sendStatus(204);
@@ -29,6 +33,25 @@ class FlatController {
 
     try {
       const { email, password, flat } = req.body;
+
+      if (!email || !password || !flat) {
+        const message = (type: string, value: any) => {
+          return { message: `The value ${value} is invalid to ${type}` };
+        };
+
+        if (!email) {
+          return res.status(409).send(message("email", email));
+        }
+
+        if (!password) {
+          return res.status(409).send(message("password", password));
+        }
+
+        if (!flat) {
+          return res.status(409).send(message("flat", flat));
+        }
+      }
+
       accountRepository.createAndSave(email, password, flat);
 
       return res.sendStatus(201);
@@ -42,16 +65,31 @@ class FlatController {
 
     try {
       const { email, password } = req.body;
+
+      if (!email || !password) {
+        const message = (type: string) => {
+          return { message: `The ${type} is required to login` };
+        };
+
+        if (!email) {
+          return res.status(409).send(message("email"));
+        }
+
+        if (!password) {
+          return res.status(409).send(message("password"));
+        }
+      }
+
       const account = await accountRepository.findByEmail(email);
 
       if (!account) {
-        return res.sendStatus(403);
+        return res.status(403).send({ message: "Invalid email" });
       }
-      
+
       const isValidPassword = await bcrypt.compare(password, account.password);
-      
+
       if (!isValidPassword) {
-        return res.sendStatus(403);
+        return res.status(403).send({ message: "Invalid password" });
       } else {
         const token = jwt.sign({ id: account.id }, process.env.JWT_KEY || "", {
           expiresIn: "1d",

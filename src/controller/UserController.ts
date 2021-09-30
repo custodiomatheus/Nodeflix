@@ -9,6 +9,21 @@ class UserController {
 
     try {
       const { nickname, account } = req.body;
+
+      if (!nickname || !account) {
+        const message = (type: string, value: any) => {
+          return { message: `The value ${value} is invalid to ${type}` };
+        };
+
+        if (!nickname) {
+          return res.status(409).send(message("nickname", nickname));
+        }
+
+        if (!account) {
+          return res.status(409).send(message("account", account));
+        }
+      }
+
       userRepository.createAndSave(nickname, account);
 
       return res.sendStatus(201);
@@ -29,7 +44,9 @@ class UserController {
         userRepository.updateNickname(id, nickname);
         return res.sendStatus(200);
       } else {
-        return res.status(409).send({ message: `The user with id ${id} do not exists` });
+        return res
+          .status(409)
+          .send({ message: `The user with id = ${id} do not exists` });
       }
     } catch (error) {
       return res.status(500).send(error);
@@ -42,10 +59,10 @@ class UserController {
     try {
       const { id } = req.params;
 
-      const users = await userRepository.findUserFavorites(parseInt(id));
+      const favorites = await userRepository.findUserFavorites(parseInt(id));
 
-      if (users) {
-        return res.status(200).send(users);
+      if (favorites) {
+        return res.status(200).send(favorites);
       } else {
         return res.sendStatus(204);
       }
