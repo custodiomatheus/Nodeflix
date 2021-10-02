@@ -92,12 +92,13 @@ class FlatController {
         return res.status(403).send({ message: "Invalid password" });
       } else {
         const token = jwt.sign({ id: account.id }, process.env.JWT_KEY || "", {
-          expiresIn: "1d",
+          expiresIn: "5h",
         });
 
         return res.status(200).send({
           id: account.id,
           email: account.email,
+          flat: account.flat,
           token,
         });
       }
