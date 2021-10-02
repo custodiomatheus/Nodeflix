@@ -15,7 +15,7 @@ export default function authMiddleware(
   const { authorization } = req.headers;
 
   if (!authorization) {
-    return res.sendStatus(403);
+    return res.status(403).send({ message: "JSON Web Token is required for this request" });
   }
 
   const token = authorization.replace("Bearer", "").trim();
@@ -27,6 +27,6 @@ export default function authMiddleware(
     req.userId = id;
     return next();
   } catch {
-    return res.sendStatus(403);
+    return res.status(401).send({ message: "JSON Web Token is invalid" });
   }
 }
